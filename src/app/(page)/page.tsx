@@ -24,7 +24,12 @@ export default function Home() {
 
   async function addUser(e: React.FormEvent) {
     e.preventDefault();
-    console.log({ name, email });
+    const payload = { name, email }
+    await axios.post('/api/user', payload)
+
+    setName('')
+    setEmail('')
+    getAllUsers();
   };
 
   useEffect(() => {
@@ -60,8 +65,8 @@ export default function Home() {
               required
             />
             <ButtonDefault
-              type='submit' 
-              onClick={() => addUser} 
+              type='submit'
+              onClick={() => addUser}
               className='bg-gray-600 text-gray-100 min-w-20 text-sm'
             >
               {formType == 'add' ? 'Add' : 'Save'}
