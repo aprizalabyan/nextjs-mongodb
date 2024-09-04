@@ -17,8 +17,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
+    const timestamp = Date.now()
+    const isoDateFormat = new Date(timestamp).toISOString()
     const reqBody = await req.json();
-    const results = await collection.insertOne(reqBody);
+    const newUser = {
+      name: reqBody.name,
+      email: reqBody.email,
+      createdAt: isoDateFormat,
+      updatedAt: isoDateFormat,
+    }
+    const results = await collection.insertOne(newUser);
     return NextResponse.json(
       {
         message: "Success add new user",

@@ -6,10 +6,16 @@ const collection = db.collection("users");
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string }}) {
   try {
+    const timestamp = Date.now()
+    const isoDateFormat = new Date(timestamp).toISOString()
     const reqBody = await req.json();
     const results = await collection.updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: reqBody }
+      { $set: {
+          name: reqBody.name,
+          email: reqBody.email,
+          updatedAt: isoDateFormat,
+      }}
     )
 
     if (results.matchedCount === 0) {
