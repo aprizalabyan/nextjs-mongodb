@@ -11,19 +11,22 @@ export async function GET(req: NextRequest, res: NextResponse) {
       data: results,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const reqBody = await req.json();
-    const results = await collection.insertOne(reqBody)
-    return NextResponse.json({
-      message: "Success add new user",
-      data: [],
-    });
+    const results = await collection.insertOne(reqBody);
+    return NextResponse.json(
+      {
+        message: "Success add new user",
+        data: { id: results.insertedId },
+      },
+      { status: 201 }
+    );
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

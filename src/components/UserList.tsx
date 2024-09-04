@@ -3,24 +3,20 @@
 import React, { useEffect, useState } from 'react';
 import ButtonDefault from './ButtonDefault';
 import { PencilIcon, TrashIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
-
-interface User {
-  _id: string,
-  name: string,
-  email: string,
-}
+import { IF_User } from '@/interfaces/common'
 
 interface Props {
-  listUser: User[];
+  listUser: IF_User[];
   formType: (data: string) => void;
   onClickAdd: (data: boolean) => void;
+  onClickEdit: (data: IF_User) => void;
 }
 
-const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd }) => {
+const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd, onClickEdit }) => {
   const [isShowForm, setIsShowForm] = useState(false)
 
-  const handleEdit = (id: string) => {
-    console.log('cliicck edit', id);
+  const handleEdit = (data: IF_User) => {
+    onClickEdit(data)
     formType('edit')
     setIsShowForm(true);
   };
@@ -65,7 +61,7 @@ const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd }) => {
               <td className="px-2 border-2 border-gray-400">{item.email}</td>
               <td className="px-2 border-2 border-gray-400">
                 <div className='flex justify-center gap-2 py-1'>
-                  <ButtonDefault onClick={() => handleEdit(item._id)} icon={PencilIcon} className='bg-gray-300 text-gray-500' />
+                  <ButtonDefault onClick={() => handleEdit(item)} icon={PencilIcon} className='bg-gray-300 text-gray-500' />
                   <ButtonDefault onClick={() => handleDelete(item._id)} icon={TrashIcon} className='bg-gray-300 text-gray-500' />
                 </div>
               </td>
