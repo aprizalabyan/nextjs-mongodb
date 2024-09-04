@@ -22,10 +22,33 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      message: "User updated successfully",
-      data: [],
-    });
+    return NextResponse.json(
+      {
+        message: "User updated successfully",
+        data: [],
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest,{ params }: { params: { id: string }}) {
+  try {
+    const results = await collection.deleteOne({ _id: new ObjectId(params.id) })
+
+    if (results.deletedCount === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      {
+        message: "User deleted successfully",
+        data: [],
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

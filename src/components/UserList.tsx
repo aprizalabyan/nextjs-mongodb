@@ -10,9 +10,10 @@ interface Props {
   formType: (data: string) => void;
   onClickAdd: (data: boolean) => void;
   onClickEdit: (data: IF_User) => void;
+  onClickDelete: (data: IF_User) => void;
 }
 
-const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd, onClickEdit }) => {
+const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd, onClickEdit, onClickDelete }) => {
   const [isShowForm, setIsShowForm] = useState(false)
 
   const handleEdit = (data: IF_User) => {
@@ -21,8 +22,8 @@ const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd, onClickEdit
     setIsShowForm(true);
   };
 
-  const handleDelete = (id: string) => {
-    console.log('cliicck del', id);
+  const handleDelete = (data: IF_User) => {
+    onClickDelete(data)
   };
 
   const f_onClickAdd = () => {
@@ -62,7 +63,7 @@ const UserList: React.FC<Props> = ({ listUser, formType, onClickAdd, onClickEdit
               <td className="px-2 border-2 border-gray-400">
                 <div className='flex justify-center gap-2 py-1'>
                   <ButtonDefault onClick={() => handleEdit(item)} icon={PencilIcon} className='bg-gray-300 text-gray-500' />
-                  <ButtonDefault onClick={() => handleDelete(item._id)} icon={TrashIcon} className='bg-gray-300 text-gray-500' />
+                  <ButtonDefault onClick={() => handleDelete(item)} icon={TrashIcon} className='bg-gray-300 text-gray-500' />
                 </div>
               </td>
             </tr>

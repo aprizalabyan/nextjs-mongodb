@@ -5,11 +5,13 @@ import axios from 'axios'
 import UserList from "@/components/UserList"
 import ButtonDefault from "@/components/ButtonDefault"
 import InputTextDefault from '@/components/InputTextDefault'
+import { useDialog } from '@/components/DialogContext';
 import { UserIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { IF_User } from '@/interfaces/common'
 
 export default function Home() {
+  const { showDialog } = useDialog();
   const [listUser, setListUser] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,6 +47,17 @@ export default function Home() {
     setEmail(data.email)
   }
 
+  const confirmDelete = (data: IF_User) => {
+    showDialog(
+      `Are you sure to delete ${data.name}?`,
+      async () => {
+        await axios.delete(`/api/user/${data._id}`)
+        getAllUsers();
+      },
+      () => {},
+    );
+  };
+
   useEffect(() => {
     getAllUsers();
   }, [])
@@ -61,7 +74,7 @@ export default function Home() {
       <span>Home Page</span>
       <br />
       <div className="flex gap-6">
-        <UserList listUser={listUser} formType={(e) => setFromType(e)} onClickAdd={(e) => setShowForm(e)} onClickEdit={onClickEdit} />
+        <UserList listUser={listUser} formType={(e) => setFromType(e)} onClickAdd={(e) => setShowForm(e)} onClickEdit={onClickEdit} onClickDelete={confirmDelete} />
         {showForm &&
           <form onSubmit={addUser} className="space-y-2">
             <span>{formType == 'add' ? 'Add New' : 'Edit'} User</span>
